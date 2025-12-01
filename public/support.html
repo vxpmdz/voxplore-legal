@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>Soporte Voxplore</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <style>
       :root {
         --bg: #060b10;
@@ -13,19 +14,13 @@
         --text: #f9fafb;
         --muted: #9ca3af;
         --border: #1f2933;
-        --error: #f97373;
-        --radius: 16px;
-      }
-
-      * {
-        box-sizing: border-box;
       }
 
       body {
         margin: 0;
         min-height: 100vh;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-          "Segoe UI", sans-serif;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
         background: radial-gradient(circle at top, #111827 0, #020617 55%, #000 100%);
         color: var(--text);
         display: flex;
@@ -38,21 +33,11 @@
         width: 100%;
         max-width: 480px;
         background: radial-gradient(circle at top left, #111827, #020617);
-        border-radius: var(--radius);
-        padding: 28px 24px 24px;
+        border-radius: 16px;
+        padding: 28px 24px;
         border: 1px solid var(--border);
         box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
         position: relative;
-        overflow: hidden;
-      }
-
-      .card::before {
-        content: "";
-        position: absolute;
-        inset: -40%;
-        background: radial-gradient(circle at top, var(--accent-soft), transparent 55%);
-        opacity: 0.9;
-        pointer-events: none;
       }
 
       .card-inner {
@@ -60,31 +45,31 @@
         z-index: 1;
       }
 
-      .badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 4px 10px;
-        border-radius: 999px;
-        font-size: 11px;
-        color: var(--accent);
-        background: rgba(15, 118, 110, 0.16);
-        border: 1px solid rgba(45, 212, 191, 0.4);
+      .lang-switcher {
+        display: flex;
+        justify-content: flex-end;
         margin-bottom: 10px;
+        gap: 8px;
       }
 
-      .dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 999px;
-        background: var(--accent);
-        box-shadow: 0 0 10px rgba(34, 197, 187, 0.9);
+      .lang-btn {
+        font-size: 22px;
+        cursor: pointer;
+        transition: transform 0.1s ease;
+      }
+
+      .lang-btn:hover {
+        transform: scale(1.15);
+      }
+
+      .lang-btn.active {
+        transform: scale(1.25);
+        filter: drop-shadow(0 0 8px var(--accent));
       }
 
       h1 {
         font-size: 24px;
         margin: 0 0 6px;
-        letter-spacing: -0.03em;
       }
 
       .subtitle {
@@ -99,16 +84,10 @@
         gap: 14px;
       }
 
-      label {
+      .field label {
         font-size: 13px;
         font-weight: 500;
         margin-bottom: 4px;
-      }
-
-      .field {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
       }
 
       input,
@@ -120,46 +99,11 @@
         font-size: 14px;
         background: rgba(15, 23, 42, 0.85);
         color: var(--text);
-        outline: none;
-        transition: border-color 0.15s ease, box-shadow 0.15s ease,
-          background 0.15s ease, transform 0.06s ease;
       }
 
       textarea {
         resize: vertical;
         min-height: 110px;
-      }
-
-      input::placeholder,
-      textarea::placeholder {
-        color: #6b7280;
-      }
-
-      input:focus,
-      textarea:focus {
-        border-color: var(--accent);
-        box-shadow: 0 0 0 1px rgba(45, 212, 191, 0.5);
-        background: rgba(15, 23, 42, 0.95);
-        transform: translateY(-0.5px);
-      }
-
-      .hint {
-        font-size: 11px;
-        color: #6b7280;
-      }
-
-      .actions {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 10px;
-        gap: 12px;
-      }
-
-      .legal {
-        font-size: 10px;
-        color: #6b7280;
-        max-width: 60%;
       }
 
       button {
@@ -171,26 +115,7 @@
         cursor: pointer;
         background: radial-gradient(circle at top left, #22c55e, #0ea5e9);
         color: #0b1120;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
         box-shadow: 0 12px 28px rgba(34, 197, 94, 0.45);
-        transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.08s;
-      }
-
-      button span.icon {
-        font-size: 15px;
-      }
-
-      button:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 16px 34px rgba(34, 197, 94, 0.6);
-        filter: brightness(1.04);
-      }
-
-      button:active {
-        transform: translateY(0);
-        box-shadow: 0 6px 18px rgba(34, 197, 94, 0.4);
       }
 
       .footer-email {
@@ -201,124 +126,131 @@
 
       .footer-email a {
         color: var(--accent);
-        text-decoration: none;
-      }
-
-      .footer-email a:hover {
-        text-decoration: underline;
-      }
-
-      @media (max-width: 480px) {
-        .card {
-          padding: 22px 18px 18px;
-        }
-
-        h1 {
-          font-size: 21px;
-        }
-
-        .actions {
-          flex-direction: column-reverse;
-          align-items: flex-start;
-        }
-
-        .legal {
-          max-width: 100%;
-        }
-
-        button {
-          width: 100%;
-          justify-content: center;
-        }
       }
     </style>
   </head>
+
   <body>
     <main class="card">
       <div class="card-inner">
-        <div class="badge">
-          <span class="dot"></span>
-          Soporte de Voxplore
+
+        <!-- 🌍 Language Switcher -->
+        <div class="lang-switcher">
+          <span class="lang-btn active" data-lang="es">🇦🇷</span>
+          <span class="lang-btn" data-lang="en">🇺🇸</span>
+          <span class="lang-btn" data-lang="pt">🇧🇷</span>
         </div>
-        <h1>¿Necesitás ayuda con la app?</h1>
-        <p class="subtitle">
+
+        <h1 id="title">¿Necesitás ayuda con la app?</h1>
+        <p class="subtitle" id="subtitle">
           Escribinos y el equipo de Voxplore se pondrá en contacto con vos lo antes posible.
         </p>
 
-        <!--
-          Versión mailto simple: abre el cliente de correo del usuario.
-          Si luego querés usar Netlify Forms, agregá:
-          - data-netlify="true"
-          - name="support"
-          y configurá las notificaciones desde el panel de Netlify.
-        -->
-        <form
-          action="mailto:vxpmdz@voxploreapp.com"
-          method="POST"
-          enctype="text/plain"
-        >
+        <form action="mailto:vxpmdz@voxploreapp.com" method="POST" enctype="text/plain">
           <div class="field">
-            <label for="name">Nombre completo</label>
-            <input
-              id="name"
-              name="Nombre"
-              type="text"
-              required
-              placeholder="Ej: Juan Pérez"
-            />
+            <label id="label-name">Nombre completo</label>
+            <input name="Nombre" type="text" required placeholder="Ej: Juan Pérez" id="placeholder-name"/>
           </div>
 
           <div class="field">
-            <label for="email">Correo electrónico</label>
-            <input
-              id="email"
-              name="Email"
-              type="email"
-              required
-              placeholder="tu-correo@ejemplo.com"
-            />
+            <label id="label-email">Correo electrónico</label>
+            <input name="Email" type="email" required placeholder="tu-correo@ejemplo.com" id="placeholder-email"/>
           </div>
 
           <div class="field">
-            <label for="topic">Motivo</label>
-            <input
-              id="topic"
-              name="Motivo"
-              type="text"
-              placeholder="Problema con un tour, pago, cuenta, etc."
-            />
-            <p class="hint">
-              Cuanto más claro sea el motivo, más rápido podremos ayudarte.
-            </p>
+            <label id="label-topic">Motivo</label>
+            <input name="Motivo" type="text" placeholder="Problema con un tour, pago, cuenta, etc." id="placeholder-topic"/>
           </div>
 
           <div class="field">
-            <label for="message">Mensaje</label>
-            <textarea
-              id="message"
-              name="Mensaje"
-              required
-              placeholder="Contanos qué pasó, en qué tour estabas y qué estabas haciendo cuando ocurrió el problema."
-            ></textarea>
+            <label id="label-message">Mensaje</label>
+            <textarea name="Mensaje" required placeholder="Contanos qué pasó..." id="placeholder-message"></textarea>
           </div>
 
-          <div class="actions">
-            <p class="legal">
-              Al enviar este formulario aceptás que nos comuniquemos con vos al
-              correo ingresado para resolver tu consulta.
-            </p>
-            <button type="submit">
-              <span class="icon">📨</span>
-              Enviar mensaje
-            </button>
-          </div>
+          <button type="submit" id="send-btn">Enviar mensaje</button>
         </form>
 
-        <p class="footer-email">
-          También podés escribirnos directamente a
+        <p class="footer-email" id="footer">
+          También podés escribirnos a
           <a href="mailto:vxpmdz@voxploreapp.com">vxpmdz@voxploreapp.com</a>.
         </p>
       </div>
     </main>
+
+    <script>
+      const translations = {
+        es: {
+          title: "¿Necesitás ayuda con la app?",
+          subtitle: "Escribinos y el equipo de Voxplore se pondrá en contacto con vos lo antes posible.",
+          labelName: "Nombre completo",
+          labelEmail: "Correo electrónico",
+          labelTopic: "Motivo",
+          labelMessage: "Mensaje",
+          sendBtn: "Enviar mensaje",
+          footer: "También podés escribirnos a",
+          phName: "Ej: Juan Pérez",
+          phEmail: "tu-correo@ejemplo.com",
+          phTopic: "Problema con un tour, pago, cuenta, etc.",
+          phMessage: "Contanos qué pasó..."
+        },
+        en: {
+          title: "Need help with the app?",
+          subtitle: "Send us your message and the Voxplore team will contact you as soon as possible.",
+          labelName: "Full name",
+          labelEmail: "Email address",
+          labelTopic: "Subject",
+          labelMessage: "Message",
+          sendBtn: "Send message",
+          footer: "You can also write to",
+          phName: "Ex: John Smith",
+          phEmail: "your-email@example.com",
+          phTopic: "Issue with a tour, payment, account, etc.",
+          phMessage: "Tell us what happened..."
+        },
+        pt: {
+          title: "Precisa de ajuda com o app?",
+          subtitle: "Envie sua mensagem e a equipe Voxplore entrará em contato o mais rápido possível.",
+          labelName: "Nome completo",
+          labelEmail: "E-mail",
+          labelTopic: "Assunto",
+          labelMessage: "Mensagem",
+          sendBtn: "Enviar mensagem",
+          footer: "Você também pode escrever para",
+          phName: "Ex: João Silva",
+          phEmail: "seu-email@exemplo.com",
+          phTopic: "Problema com tour, pagamento, conta, etc.",
+          phMessage: "Conte-nos o que aconteceu..."
+        }
+      };
+
+      const btns = document.querySelectorAll(".lang-btn");
+      const setLang = (lang) => {
+        const t = translations[lang];
+        document.getElementById("title").innerText = t.title;
+        document.getElementById("subtitle").innerText = t.subtitle;
+
+        document.getElementById("label-name").innerText = t.labelName;
+        document.getElementById("label-email").innerText = t.labelEmail;
+        document.getElementById("label-topic").innerText = t.labelTopic;
+        document.getElementById("label-message").innerText = t.labelMessage;
+        document.getElementById("send-btn").innerText = t.sendBtn;
+
+        document.getElementById("footer").innerHTML =
+          `${t.footer} <a href="mailto:vxpmdz@voxploreapp.com">vxpmdz@voxploreapp.com</a>.`;
+
+        document.getElementById("placeholder-name").placeholder = t.phName;
+        document.getElementById("placeholder-email").placeholder = t.phEmail;
+        document.getElementById("placeholder-topic").placeholder = t.phTopic;
+        document.getElementById("placeholder-message").placeholder = t.phMessage;
+      };
+
+      btns.forEach((b) =>
+        b.addEventListener("click", () => {
+          btns.forEach((x) => x.classList.remove("active"));
+          b.classList.add("active");
+          setLang(b.dataset.lang);
+        })
+      );
+    </script>
   </body>
 </html>
